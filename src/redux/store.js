@@ -56,18 +56,11 @@ const middleware =
 // };
 
 const items = createReducer([], {
-  [actions.fetchContacts.fulfilled]: (_, { payload }) => {
-    // console.log(payload);
-    return payload;
-  },
-  // [actions.fetchContacts]: (state, { payload }) => payload,
+  [actions.fetchContacts.fulfilled]: (_, { payload }) => payload,
   //                     Деструктуризируем payload из action
-  [actions.addContact]: (state, { payload }) => {
-    console.log('payload ', payload);
-    return [...state, { ...payload }];
-  },
-  [actions.deleteContact]: (state, { payload }) => [
-    ...state.filter(contact => contact.id !== payload),
+  [actions.addContact.fulfilled]: (state, { payload }) => [...state, payload],
+  [actions.deleteContact.fulfilled]: (state, { payload }) => [
+    ...state.filter(contact => contact.id !== payload.id),
   ],
 });
 

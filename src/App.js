@@ -1,5 +1,4 @@
 import { Fragment } from 'react';
-import { nanoid } from 'nanoid';
 
 import Filter from './components/Filter/Filter';
 import Form from './components/Form/Form';
@@ -10,7 +9,6 @@ import { useState, useEffect } from 'react';
 
 import { useSelector, useDispatch } from 'react-redux';
 
-import { getContacts } from './services';
 import { fetchContacts } from './redux/phonebook-actions';
 
 import {
@@ -26,7 +24,7 @@ function App() {
     dispatch(fetchContacts());
   }, []);
 
-  const [number, setNumber] = useState('');
+  const [phone, setPhone] = useState('');
   const [name, setName] = useState('');
 
   const { filter } = useSelector(state => {
@@ -46,7 +44,7 @@ function App() {
         setName(e.currentTarget.value);
         break;
       case 'number':
-        setNumber(e.currentTarget.value);
+        setPhone(e.currentTarget.value);
         break;
       default:
         return;
@@ -55,7 +53,6 @@ function App() {
 
   const onClick = e => {
     e.preventDefault();
-    const id = nanoid();
 
     if (e.target.checkValidity()) {
       if (
@@ -68,7 +65,7 @@ function App() {
         alert(`${name} is already in contacts`);
         return;
       }
-      dispatch(addContact({ name, number }));
+      dispatch(addContact({ name, phone }));
       // dispatch(fetchContacts());
       // Пропихиваем объект, котоорый в редьюсере будет в виде payload
     }

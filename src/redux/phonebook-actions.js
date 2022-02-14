@@ -1,6 +1,4 @@
 import { createAction, createAsyncThunk } from '@reduxjs/toolkit';
-import { getContacts } from '../services';
-import { useDispatch } from 'react-redux';
 
 //                                                      prepareCallback -> (Подготовка формы payload)
 // export const addContact = createAction(AddContact, (name, id, number) => ({
@@ -16,9 +14,26 @@ import { useDispatch } from 'react-redux';
 // console.log(addContact({ a: 5 }));
 //Кидаем объект внутрь addContact вместо отдельных параметров
 
-export const deleteContact = createAction('phonebook/deleteContact');
+// export const deleteContact = createAction('phonebook/deleteContact');
 
 export const searchContacts = createAction('phonebook/searchContacts');
+
+export const deleteContact = createAsyncThunk(
+  'contacts/deleteContact',
+  async id => {
+    const response = await fetch(
+      `https://620677d592dd6600171c0afc.mockapi.io/contacts/${id}`,
+      {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json;charset=utf-8',
+        },
+        // body: JSON.stringify(id),
+      },
+    ).then(res => res.json());
+    return response;
+  },
+);
 
 export const fetchContacts = createAsyncThunk(
   'contacts/getContacts',
@@ -26,15 +41,13 @@ export const fetchContacts = createAsyncThunk(
     const response = await fetch(
       'https://620677d592dd6600171c0afc.mockapi.io/contacts',
     ).then(res => res.json());
-    //   console.log(response);
     return response;
   },
 );
 
 export const addContact = createAsyncThunk(
-  'contacts/getContacts',
+  'contacts/addContact',
   async contact => {
-    console.log('asda',contact);
     const response = await fetch(
       'https://620677d592dd6600171c0afc.mockapi.io/contacts',
       {
@@ -44,7 +57,7 @@ export const addContact = createAsyncThunk(
         },
         body: JSON.stringify(contact),
       },
-      );
-    //   return response;
+    ).then(res => res.json());
+    return response;
   },
 );
